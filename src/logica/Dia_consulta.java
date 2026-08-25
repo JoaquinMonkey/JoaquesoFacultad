@@ -16,4 +16,24 @@ public class Dia_consulta {
 		this.hora_inicio = hora_inicio;
 		this.clinica = clinica;
 	}
+	
+	public String getNombre() {
+		return this.nombre;
+	}
+	
+	public String getDesc() {
+		return this.descripcion;
+	}
+	
+	public int getDiaSem() {
+		return this.dia_sem;
+	}
+	
+	public LocalTime getHoraInicio() {
+		return this.hora_inicio;
+	}
+	
+	public Clinica getClinica() {
+		return this.clinica;
+	}
 }
