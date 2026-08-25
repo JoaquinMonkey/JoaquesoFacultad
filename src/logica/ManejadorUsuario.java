@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ManejadorUsuario {
-	private Map<String, Usuario> usuarios;
+	private Map<String, Usuario> usuariosPorMail;
+	private Map<String, Usuario> usuariosPorNick;
     private static ManejadorUsuario instancia = null;
 
     private ManejadorUsuario() {
-        usuarios = new HashMap<String, Usuario>();
+        usuariosPorMail = new HashMap<String, Usuario>();
+        usuariosPorNick = new HashMap<String, Usuario>();
     }
 
     public static ManejadorUsuario getinstance() {
@@ -19,18 +21,19 @@ public class ManejadorUsuario {
     }
 
     public void addUsuario(Usuario usu) {
-        usuarios.put(usu.getNickname(), usu);
+        usuariosPorNick.put(usu.getNickname(), usu);
+        usuariosPorMail.put(usu.getMail(), usu);
     }
 
     public Usuario obtenerUsuario(String nickname) {
-        return usuarios.get(nickname);
+        return usuariosPorNick.get(nickname);
     }
 
     public Usuario[] getUsuarios() {
-        if (usuarios.isEmpty())
+        if (usuariosPorNick.isEmpty())
             return null;
         else {
-        	Collection<Usuario> usrs = usuarios.values();
+        	Collection<Usuario> usrs = usuariosPorNick.values();
             Object[] o = usrs.toArray();
             Usuario[] res = new Usuario[o.length];
             for (int i = 0; i < o.length; i++) {

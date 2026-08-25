@@ -18,6 +18,26 @@ public class Consulta {
 		this.fecha = fecha;
 		this.nro_sala = nro_sala;
 		this.nros_disp = nros_disp;
-		this.reservas = new HashMap<>();
+		this.reservas = new HashMap<String, Reserva>();
+	}
+	
+	public String getNombre() {
+		return this.nombre;
+	}
+	
+	public LocalDate getFecha() {
+		return this.fecha;
+	}
+	
+	public int getNroSala() {
+		return this.nro_sala;
+	}
+	
+	public int getNrosDisp() {
+		return this.nros_disp;
+	}
+	
+	public Map<String, Reserva> getReservas(){
+		return this.reservas;
 	}
 }
