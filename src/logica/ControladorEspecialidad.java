@@ -2,8 +2,19 @@ package logica;
 
 import java.util.Map;
 
+import excepciones.NombreEspecialidadRepetidoException;
+
 public class ControladorEspecialidad implements IControladorEspecialidad {
-	public boolean esValidoNombreEspecialidad(String nombre) {
+
+	public void altaEspecialidad(String nombre, float porcentaje_ad) throws NombreEspecialidadRepetidoException {
+		if (!esValidoNombreEspecialidad(nombre)) {
+			throw new NombreEspecialidadRepetidoException("El nombre de la especialidad ya esta en uso");
+		}
+		ManejadorEspecialidad me = ManejadorEspecialidad.getinstance();
+		me.crearEspecialidad(nombre, porcentaje_ad);
+	}
+
+	private boolean esValidoNombreEspecialidad(String nombre) {
 		boolean esValido = false;
 
 		ManejadorEspecialidad me = ManejadorEspecialidad.getinstance();
@@ -15,10 +26,4 @@ public class ControladorEspecialidad implements IControladorEspecialidad {
 
 		return esValido;
 	}
-
-	public void altaEspecialidad(String nombre, float porcentaje_ad) {
-		ManejadorEspecialidad me = ManejadorEspecialidad.getinstance();
-		me.crearEspecialidad(nombre, porcentaje_ad);
-	}
-
 }

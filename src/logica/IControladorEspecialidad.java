@@ -1,7 +1,7 @@
 package logica;
 
-public interface IControladorEspecialidad {
-	public abstract boolean esValidoNombreEspecialidad(String nombre);
+import excepciones.NombreEspecialidadRepetidoException;
 
-	public abstract void altaEspecialidad(String nombre, float porcentaje_ad);
+public interface IControladorEspecialidad {
+	public abstract void altaEspecialidad(String nombre, float porcentaje_ad) throws NombreEspecialidadRepetidoException;
 }
