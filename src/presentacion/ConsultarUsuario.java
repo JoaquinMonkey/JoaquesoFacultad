@@ -10,6 +10,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -404,8 +405,8 @@ public class ConsultarUsuario extends JInternalFrame {
 	            "Juan",
 	            "Perez",
 	            "juan@gmail.com",
-	            new DTFecha(10, 5, 2000),
-	            new DTFecha(23, 8, 2026),
+	            LocalDate.of(2000, 5, 10),
+	            LocalDate.of(2026, 8, 23),
 	            12345678,
 	            antecedentes
 	    );
