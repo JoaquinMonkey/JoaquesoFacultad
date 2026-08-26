@@ -7,6 +7,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import logica.Fabrica;
+import logica.IControladorEspecialidad;
 import logica.IControladorUsuario;
 
 import javax.swing.JMenu;
@@ -17,6 +18,7 @@ public class Principal {
 
 	private JFrame frmGestionDeUsuarios;
 	private IControladorUsuario ICU;
+	private IControladorEspecialidad ICE;
 	private AltaUsuario creUsrInternalFrame;
 	private ConsultarUsuario conUsrInternalFrame;
 	private ListaUsuarios lisUsrInternalFrame;
@@ -48,6 +50,7 @@ public class Principal {
 		// Inicialización
 		Fabrica fabrica = Fabrica.getInstance();
 		ICU = fabrica.getIControladorUsuario();
+		ICE = fabrica.getIControladorEspecialidad();
 
 		// Se crean los tres InternalFrame y se incluyen al Frame principal ocultos.
 		// De esta forma, no es necesario crear y destruir objetos lo que enlentece la
@@ -64,7 +67,7 @@ public class Principal {
 		lisUsrInternalFrame.setVisible(false);
 		frmGestionDeUsuarios.getContentPane().setLayout(null);
 
-		altaEspInternalFrame = new AltaEspecialidad();
+		altaEspInternalFrame = new AltaEspecialidad(ICE);
 		altaEspInternalFrame.setVisible(false);
 
 		altaBenAnInternalFrame = new AltaBeneficioAnual(ICU);

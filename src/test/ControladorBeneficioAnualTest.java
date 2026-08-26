@@ -11,15 +11,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import excepciones.AnioBeneficioAnualRepetidoException;
-import excepciones.NombreEspecialidadRepetidoException;
 import logica.BeneficioAnual;
 import logica.DTBeneficioAnual;
-import logica.Especialidad;
 import logica.Fabrica;
 import logica.IControladorBeneficioAnual;
-import logica.IControladorEspecialidad;
-import logica.ManejadorEspecialidad;
 import logica.ManejadorUsuario;
+import logica.Medico;
 import logica.Paciente;
 
 class ControladorBeneficioAnualTest {
@@ -41,7 +38,9 @@ class ControladorBeneficioAnualTest {
 		nickname3 = "alvaro";
 		mu.addUsuario(new Paciente(nickname, "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
 		mu.addUsuario(new Paciente(nickname2, "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
+		mu.addUsuario(new Medico("asdasd1", "asd", "asd2", "asd3", 1, 2, 3, "eva"));
 		mu.addUsuario(new Paciente(nickname3, "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
+		mu.addUsuario(new Medico("asdasd2", "asd", "asd2", "asd3",  1, 2, 3, "eva"));
 		mu.addUsuario(new Paciente(nickname4, "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
 	}
 
