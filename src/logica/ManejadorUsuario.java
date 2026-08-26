@@ -1,5 +1,6 @@
 package logica;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +43,19 @@ public class ManejadorUsuario {
 
             return res;
         }
+        
+    }
+    
+    public Map<String, Paciente> getPacientes() {
+    	Usuario[] su = getUsuarios();
+    	Map<String, Paciente> sp = new HashMap<String, Paciente>();
+    	for (Usuario u: su) {
+    		if (u instanceof Paciente) {
+    			Paciente p = (Paciente) u;
+    			sp.put(p.getNickname(), p);
+    		}
+    	}
+    	return sp;
     }
 
 }

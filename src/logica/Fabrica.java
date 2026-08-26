@@ -28,4 +28,7 @@ public class Fabrica {
         return new ControladorEspecialidad();
     }
 
+    public IControladorBeneficioAnual getIControladorBeneficioAnual() {
+        return new ControladorBeneficioAnual();
+    }
 }
