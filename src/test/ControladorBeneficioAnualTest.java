@@ -56,13 +56,7 @@ class ControladorBeneficioAnualTest {
 		cba.altaBeneficioAnual(nickname, anio, cantMed, cantOrd);
 		cba.altaBeneficioAnual(nickname, anio2, cantMed2, cantOrd2);
 
-		Set<Paciente> pacientes = mu.getPacientes();
-		Paciente paciente = null;
-		for (Paciente p : pacientes) {
-			if (p.getNickname() == nickname) {
-				paciente = p;
-			}
-		}
+		Paciente paciente = mu.getPaciente(nickname);
 		Map<Integer, BeneficioAnual> beneficiosAnuales = paciente.getBeneficiosAnuales();
 		assertTrue(beneficiosAnuales.containsKey(anio));
 		assertTrue(beneficiosAnuales.containsKey(anio2));
@@ -79,7 +73,7 @@ class ControladorBeneficioAnualTest {
 	}
 
 	@Test
-	void testAltaBeneficioAnualNicknameRepetido() {
+	void testAltaBeneficioAnualAnioRepetido() {
 		try {
 			cba.altaBeneficioAnual(nickname, 2048, 15, 24);
 		} catch (AnioBeneficioAnualRepetidoException e) {
