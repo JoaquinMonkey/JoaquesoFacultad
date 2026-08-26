@@ -2,6 +2,8 @@ package logica;
 
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
+import java.util.Set;
+import java.util.HashSet;
 
 public class ControladorUsuario implements IControladorUsuario {
 
@@ -159,4 +161,16 @@ public class ControladorUsuario implements IControladorUsuario {
                 "Tipo de usuario desconocido"
         );
     }
+    
+    @Override
+    public Set<String> listarPacientes(){
+    	ManejadorUsuario mU = ManejadorUsuario.getinstance();
+    	Set<Paciente> usu = mU.getPacientes();
+    	Set<String> ret = new HashSet<>();
+    	for (Paciente p: usu)
+    		ret.add(p.getNickname());
+    	return ret;
+    	
+    }
+       
 }

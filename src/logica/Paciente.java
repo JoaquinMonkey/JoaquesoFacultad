@@ -2,6 +2,7 @@ package logica;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ public class Paciente extends Usuario {
     private int ci;
     private Set<String> antecedentes;
     private Map<Integer, BeneficioAnual> beneficiosAnuales;
+    private Set<Reserva> reservas;
 
     public Paciente(
             String nickname,
@@ -30,6 +32,7 @@ public class Paciente extends Usuario {
         this.ci = ci;
         this.antecedentes = antecedentes;
         this.beneficiosAnuales = new HashMap<Integer, BeneficioAnual>();
+        this.reservas = new HashSet<Reserva>();
     }
 
     public LocalDate getFechaNac() {
@@ -48,11 +51,15 @@ public class Paciente extends Usuario {
         return antecedentes;
     }
 
-	public Map<Integer, BeneficioAnual> getBeneficiosAnuales() {
-		return beneficiosAnuales;
-	}
-    
-	public void addBeneficioAnual(BeneficioAnual ba) {
-		this.beneficiosAnuales.put(ba.getAnio(), ba);
-	}
+    public Map<Integer, BeneficioAnual> getBeneficiosAnuales() {
+        return beneficiosAnuales;
+    }
+
+    public void addBeneficioAnual(BeneficioAnual ba) {
+        this.beneficiosAnuales.put(ba.getAnio(), ba);
+    }
+
+    public Set<Reserva> getReservas() {
+        return reservas;
+    }
 }
