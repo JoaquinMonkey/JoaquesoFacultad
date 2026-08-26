@@ -67,6 +67,7 @@ public class AltaBeneficioAnual extends JInternalFrame {
 		getContentPane().add(lblIngresePaciente, gbc_lblIngresePaciente);
 
 		comboBoxPacientes = new JComboBox<String>();
+		comboBoxPacientes.setSelectedIndex(-1);
 		GridBagConstraints gbc_comboBoxUsuarios = new GridBagConstraints();
 		gbc_comboBoxUsuarios.gridwidth = 2;
 		gbc_comboBoxUsuarios.insets = new Insets(0, 0, 5, 0);
@@ -266,6 +267,7 @@ public class AltaBeneficioAnual extends JInternalFrame {
 	}
 
 	private void limpiarFormulario() {
+		comboBoxPacientes.setSelectedIndex(-1);
 		textFieldAnio.setText("");
 		textFieldCantOrd.setText("");
 		textFieldCantMed.setText("");

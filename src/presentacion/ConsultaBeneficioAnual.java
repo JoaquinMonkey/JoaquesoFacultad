@@ -5,37 +5,43 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import excepciones.UsuarioNoExisteException;
-import logica.DataUsuario;
+import logica.DTBeneficioAnual;
 import logica.IControladorBeneficioAnual;
-import logica.IControladorUsuario;
 import logica.ManejadorUsuario;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class ConsultaBeneficioAnual extends JInternalFrame {
 	private IControladorBeneficioAnual icba;
-	private IControladorUsuario icu;
 	private JLabel lblIngresePaciente;
 	private JComboBox<String> comboBoxPacientes;
 	private JLabel lblIngreseAnio;
 	private JComboBox<Integer> comboBoxBeneficioAnual;
+	private JButton btnConsultar;
+	private JPanel panelDataConsultaBeneficio;
+	private JLabel lblAnio;
+	private JLabel lblOrdenes;
+	private JLabel lblTickets;
+	private JTextField textFieldAnio;
+	private JTextField textFieldOrdenes;
+	private JTextField textFieldTickets;
+	private JLabel lblBeneficioAnual;
 
-	public ConsultaBeneficioAnual(IControladorBeneficioAnual icba, IControladorUsuario icu) {
+	public ConsultaBeneficioAnual(IControladorBeneficioAnual icba) {
 		this.icba = icba;
-		this.icu = icu;
 
 		setResizable(true);
 		setIconifiable(true);
@@ -43,7 +49,7 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setClosable(true);
 		setTitle("Consulta de Beneficio Anual");
-		setBounds(10, 40, 360, 190);
+		setBounds(10, 40, 360, 300);
 
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -52,7 +58,7 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 		gridBagLayout.columnWidths = new int[] { 100, 120, 120, 0 };
 		gridBagLayout.rowHeights = new int[] { 30, 30, 30, 30, 0, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 		contentPane.setLayout(gridBagLayout);
 
 		lblIngresePaciente = new JLabel("Paciente:");
@@ -66,6 +72,7 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 		getContentPane().add(lblIngresePaciente, gbc_lblIngresePaciente);
 
 		comboBoxPacientes = new JComboBox<String>();
+		comboBoxPacientes.setSelectedIndex(-1);
 		comboBoxPacientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nickname = (String) comboBoxPacientes.getSelectedItem();
@@ -94,6 +101,7 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 		getContentPane().add(lblIngreseAnio, gbc_lblIngreseAnio);
 
 		comboBoxBeneficioAnual = new JComboBox<Integer>();
+		comboBoxBeneficioAnual.setSelectedIndex(-1);
 		comboBoxBeneficioAnual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Integer anio = (Integer) comboBoxBeneficioAnual.getSelectedItem();
@@ -109,6 +117,101 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 		gbc_comboBoxBeneficioAnual.gridx = 1;
 		gbc_comboBoxBeneficioAnual.gridy = 1;
 		getContentPane().add(comboBoxBeneficioAnual, gbc_comboBoxBeneficioAnual);
+
+		btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cmdConsultaBeneficioAnualActionPerformed(e);
+			};
+		});
+		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
+		gbc_btnAceptar.gridwidth = 2;
+		gbc_btnAceptar.fill = GridBagConstraints.BOTH;
+		gbc_btnAceptar.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAceptar.gridx = 1;
+		gbc_btnAceptar.gridy = 2;
+		getContentPane().add(btnConsultar, gbc_btnAceptar);
+
+		panelDataConsultaBeneficio = new JPanel();
+		GridBagConstraints gbc_panelDataConsultaBeneficio = new GridBagConstraints();
+		gbc_panelDataConsultaBeneficio.gridwidth = 3;
+		gbc_panelDataConsultaBeneficio.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panelDataConsultaBeneficio.gridx = 0;
+		gbc_panelDataConsultaBeneficio.gridy = 4;
+		GridBagLayout gbl_panelDataConsultaBeneficio = new GridBagLayout();
+		gbl_panelDataConsultaBeneficio.columnWidths = new int[] { 100, 120, 120, 0 };
+		gbl_panelDataConsultaBeneficio.rowHeights = new int[] { 30, 30, 30, 30, 0 };
+		gbl_panelDataConsultaBeneficio.columnWeights = new double[] { 0.0, 1.0, 0.0, Double.MIN_VALUE };
+		gbl_panelDataConsultaBeneficio.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		panelDataConsultaBeneficio.setLayout(gbl_panelDataConsultaBeneficio);
+		contentPane.add(panelDataConsultaBeneficio, gbc_panelDataConsultaBeneficio);
+
+		lblBeneficioAnual = new JLabel("Beneficio Anual:");
+		GridBagConstraints gbc_lblBeneficioAnual = new GridBagConstraints();
+		gbc_lblBeneficioAnual.gridwidth = 3;
+		gbc_lblBeneficioAnual.insets = new Insets(0, 0, 5, 0);
+		gbc_lblBeneficioAnual.gridx = 0;
+		gbc_lblBeneficioAnual.gridy = 0;
+		panelDataConsultaBeneficio.add(lblBeneficioAnual, gbc_lblBeneficioAnual);
+
+		lblAnio = new JLabel("Año:");
+		lblAnio.setHorizontalAlignment(SwingConstants.RIGHT);
+		GridBagConstraints gbc_lblAnio = new GridBagConstraints();
+		gbc_lblAnio.anchor = GridBagConstraints.EAST;
+		gbc_lblAnio.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAnio.gridx = 0;
+		gbc_lblAnio.gridy = 1;
+		panelDataConsultaBeneficio.add(lblAnio, gbc_lblAnio);
+
+		textFieldAnio = new JTextField();
+		textFieldAnio.setEditable(false);
+		GridBagConstraints gbc_textFieldAnio = new GridBagConstraints();
+		gbc_textFieldAnio.gridwidth = 2;
+		gbc_textFieldAnio.insets = new Insets(0, 0, 5, 0);
+		gbc_textFieldAnio.fill = GridBagConstraints.BOTH;
+		gbc_textFieldAnio.gridx = 1;
+		gbc_textFieldAnio.gridy = 1;
+		panelDataConsultaBeneficio.add(textFieldAnio, gbc_textFieldAnio);
+		textFieldAnio.setColumns(10);
+
+		lblOrdenes = new JLabel("Ordenes:");
+		lblOrdenes.setHorizontalAlignment(SwingConstants.RIGHT);
+		GridBagConstraints gbc_lblOrdenes = new GridBagConstraints();
+		gbc_lblOrdenes.anchor = GridBagConstraints.EAST;
+		gbc_lblOrdenes.insets = new Insets(0, 0, 5, 5);
+		gbc_lblOrdenes.gridx = 0;
+		gbc_lblOrdenes.gridy = 2;
+		panelDataConsultaBeneficio.add(lblOrdenes, gbc_lblOrdenes);
+
+		textFieldOrdenes = new JTextField();
+		textFieldOrdenes.setEditable(false);
+		GridBagConstraints gbc_textFieldOrdenes = new GridBagConstraints();
+		gbc_textFieldOrdenes.gridwidth = 2;
+		gbc_textFieldOrdenes.insets = new Insets(0, 0, 5, 0);
+		gbc_textFieldOrdenes.fill = GridBagConstraints.BOTH;
+		gbc_textFieldOrdenes.gridx = 1;
+		gbc_textFieldOrdenes.gridy = 2;
+		panelDataConsultaBeneficio.add(textFieldOrdenes, gbc_textFieldOrdenes);
+		textFieldOrdenes.setColumns(10);
+
+		lblTickets = new JLabel("Tickets:");
+		lblTickets.setHorizontalAlignment(SwingConstants.RIGHT);
+		GridBagConstraints gbc_lblTickets = new GridBagConstraints();
+		gbc_lblTickets.anchor = GridBagConstraints.EAST;
+		gbc_lblTickets.insets = new Insets(0, 0, 0, 5);
+		gbc_lblTickets.gridx = 0;
+		gbc_lblTickets.gridy = 3;
+		panelDataConsultaBeneficio.add(lblTickets, gbc_lblTickets);
+
+		textFieldTickets = new JTextField();
+		textFieldTickets.setEditable(false);
+		GridBagConstraints gbc_textFieldTickets = new GridBagConstraints();
+		gbc_textFieldTickets.gridwidth = 2;
+		gbc_textFieldTickets.fill = GridBagConstraints.BOTH;
+		gbc_textFieldTickets.gridx = 1;
+		gbc_textFieldTickets.gridy = 3;
+		panelDataConsultaBeneficio.add(textFieldTickets, gbc_textFieldTickets);
+		textFieldTickets.setColumns(10);
 
 	}
 
@@ -130,4 +233,38 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 		model = new DefaultComboBoxModel<Integer>(beneficiosAnuales.toArray(new Integer[0]));
 		comboBoxBeneficioAnual.setModel(model);
 	}
+
+	protected void cmdConsultaBeneficioAnualActionPerformed(ActionEvent arg0) {
+		String nickname = (String) this.comboBoxPacientes.getSelectedItem();
+		Integer anio = (Integer) this.comboBoxBeneficioAnual.getSelectedItem();
+
+		if (checkFormulario()) {
+			DTBeneficioAnual dtba = icba.consultaBeneficioAnual(nickname, anio);
+			textFieldAnio.setText(String.valueOf(dtba.getAnio()));
+			textFieldOrdenes.setText(String.valueOf(dtba.getCantOrd()));
+			textFieldTickets.setText(String.valueOf(dtba.getCantMed()));
+		}
+	}
+
+	private boolean checkFormulario() {
+		String nickname = (String) this.comboBoxPacientes.getSelectedItem();
+		Integer anio = (Integer) this.comboBoxBeneficioAnual.getSelectedItem();
+
+		if (nickname == null || anio == null) {
+			JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Consulta de Beneficio Anual",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		return true;
+	}
+
+	public void limpiarFormulario() {
+		comboBoxPacientes.setSelectedIndex(-1);
+		comboBoxBeneficioAnual.setSelectedIndex(-1);
+		textFieldAnio.setText("");
+		textFieldOrdenes.setText("");
+		textFieldTickets.setText("");
+	}
+
 }

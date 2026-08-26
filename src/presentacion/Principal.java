@@ -82,7 +82,7 @@ public class Principal {
 		altaBenAnInternalFrame = new AltaBeneficioAnual(ICBA);
 		altaBenAnInternalFrame.setVisible(false);
 
-		conBenAnInternalFrame = new ConsultaBeneficioAnual(ICBA, ICU);
+		conBenAnInternalFrame = new ConsultaBeneficioAnual(ICBA);
 		conBenAnInternalFrame.setVisible(false);
 
 		frmGestionDeUsuarios.getContentPane().add(conUsrInternalFrame);
@@ -179,15 +179,16 @@ public class Principal {
 		JMenuItem menuItemConsultaDeBeneficio = new JMenuItem("Consulta de Beneficio Anual");
 		menuItemConsultaDeBeneficio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				conBenAnInternalFrame.limpiarFormulario();
 				conBenAnInternalFrame.cargarPacientes();
 				conBenAnInternalFrame.setVisible(true);
 			}
 		});
 		menuBeneficiosAnuales.add(menuItemConsultaDeBeneficio);
 
-//		ManejadorUsuario mu = ManejadorUsuario.getinstance();
-//		mu.addUsuario(new Paciente("pedro", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
-//		mu.addUsuario(new Paciente("juan", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
-//		mu.addUsuario(new Medico("asdasd1", "asd", "asd2", "asd3", 1, 2, 3, "eva"));
+		ManejadorUsuario mu = ManejadorUsuario.getinstance();
+		mu.addUsuario(new Paciente("pedro", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
+		mu.addUsuario(new Paciente("juan", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
+		mu.addUsuario(new Medico("asdasd1", "asd", "asd2", "asd3", 1, 2, 3, "eva"));
 	}
 }
