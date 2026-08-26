@@ -56,8 +56,13 @@ class ControladorBeneficioAnualTest {
 		cba.altaBeneficioAnual(nickname, anio, cantMed, cantOrd);
 		cba.altaBeneficioAnual(nickname, anio2, cantMed2, cantOrd2);
 
-		Map<String, Paciente> pacientes = mu.getPacientes();
-		Paciente paciente = pacientes.get(nickname);
+		Set<Paciente> pacientes = mu.getPacientes();
+		Paciente paciente = null;
+		for (Paciente p : pacientes) {
+			if (p.getNickname() == nickname) {
+				paciente = p;
+			}
+		}
 		Map<Integer, BeneficioAnual> beneficiosAnuales = paciente.getBeneficiosAnuales();
 		assertTrue(beneficiosAnuales.containsKey(anio));
 		assertTrue(beneficiosAnuales.containsKey(anio2));
@@ -127,4 +132,6 @@ class ControladorBeneficioAnualTest {
 		assertEquals(dtba.getCantMed(), cantMed2);
 		assertEquals(dtba.getCantOrd(), cantOrd2);
 	}
+	
+	
 }

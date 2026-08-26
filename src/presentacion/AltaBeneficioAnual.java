@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JComboBox;
 import logica.IControladorBeneficioAnual;
 import logica.ManejadorUsuario;
+import logica.Paciente;
 
 @SuppressWarnings("serial")
 public class AltaBeneficioAnual extends JInternalFrame {
@@ -169,14 +170,11 @@ public class AltaBeneficioAnual extends JInternalFrame {
 	}
 
 	public void cargarPacientes() {
-		DefaultComboBoxModel<String> model;
-		try {
-			model = new DefaultComboBoxModel<String>(
-					ManejadorUsuario.getinstance().getPacientes().keySet().toArray(new String[0]));
-		} catch (NullPointerException e) {
-			model = new DefaultComboBoxModel<String>();
-		}
-
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(ManejadorUsuario.getinstance().getPacientes()
+				.stream()
+				.map(Paciente::getNickname)
+				.toArray(String[]::new)
+		);
 		comboBoxPacientes.setModel(model);
 	}
 

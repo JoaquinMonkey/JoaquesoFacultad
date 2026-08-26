@@ -21,6 +21,8 @@ import javax.swing.border.EmptyBorder;
 import logica.DTBeneficioAnual;
 import logica.IControladorBeneficioAnual;
 import logica.ManejadorUsuario;
+import logica.Paciente;
+
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
@@ -216,14 +218,11 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 	}
 
 	public void cargarPacientes() {
-		DefaultComboBoxModel<String> model;
-		try {
-			model = new DefaultComboBoxModel<String>(
-					ManejadorUsuario.getinstance().getPacientes().keySet().toArray(new String[0]));
-		} catch (NullPointerException e) {
-			model = new DefaultComboBoxModel<String>();
-		}
-
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(ManejadorUsuario.getinstance().getPacientes()
+				.stream()
+				.map(Paciente::getNickname)
+				.toArray(String[]::new)
+		);
 		comboBoxPacientes.setModel(model);
 	}
 

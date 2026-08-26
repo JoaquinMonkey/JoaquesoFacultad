@@ -15,23 +15,23 @@ public class ControladorBeneficioAnual implements IControladorBeneficioAnual {
 		ManejadorUsuario mu = ManejadorUsuario.getinstance();
 		BeneficioAnual beneficioAnual = new BeneficioAnual(anio, cantMed, cantOrd);
 
-		Map<String, Paciente> pacientes = mu.getPacientes();
-		Paciente paciente = pacientes.get(nicknamePaciente);
+		Set<Paciente> pacientes = mu.getPacientes();
+		Paciente paciente = getPaciente(nicknamePaciente, pacientes);
 		paciente.addBeneficioAnual(beneficioAnual);
 	}
 
 	public Set<Integer> listarBeneficiosAnuales(String nicknamePaciente) {
 		ManejadorUsuario mu = ManejadorUsuario.getinstance();
-		Map<String, Paciente> pacientes = mu.getPacientes();
-		Paciente paciente = pacientes.get(nicknamePaciente);
+		Set<Paciente> pacientes = mu.getPacientes();
+		Paciente paciente = getPaciente(nicknamePaciente, pacientes);
 		Map<Integer, BeneficioAnual> beneficiosAnuales = paciente.getBeneficiosAnuales();
 		return beneficiosAnuales.keySet();
 	}
 
 	public DTBeneficioAnual consultaBeneficioAnual(String nicknamePaciente, int anio) {
 		ManejadorUsuario mu = ManejadorUsuario.getinstance();
-		Map<String, Paciente> pacientes = mu.getPacientes();
-		Paciente paciente = pacientes.get(nicknamePaciente);
+		Set<Paciente> pacientes = mu.getPacientes();
+		Paciente paciente = getPaciente(nicknamePaciente, pacientes);
 		Map<Integer, BeneficioAnual> beneficiosAnuales = paciente.getBeneficiosAnuales();
 		BeneficioAnual beneficioAnual = beneficiosAnuales.get(anio);
 		return beneficioAnual.getDTBeneficioAnual();
@@ -39,10 +39,20 @@ public class ControladorBeneficioAnual implements IControladorBeneficioAnual {
 
 	private boolean esValidoAnioBeneficioAnual(String nicknamePaciente, int anio) {
 		ManejadorUsuario mu = ManejadorUsuario.getinstance();
-		Map<String, Paciente> pacientes = mu.getPacientes();
-		Paciente paciente = pacientes.get(nicknamePaciente);
+		Set<Paciente> pacientes = mu.getPacientes();
+		Paciente paciente = getPaciente(nicknamePaciente, pacientes);
 		Map<Integer, BeneficioAnual> beneficiosAnuales = paciente.getBeneficiosAnuales();
 		return !beneficiosAnuales.containsKey(anio);
+	}
+
+	private Paciente getPaciente(String nickname, Set<Paciente> pacientes) {
+		Paciente p = null;
+		for (Paciente paciente : pacientes) {
+			if (paciente.getNickname() == nickname) {
+				p = paciente;
+			}
+		}
+		return p;
 	}
 
 }

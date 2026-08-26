@@ -2,8 +2,6 @@ package presentacion;
 
 import java.util.HashSet;
 import java.util.Set;
-import logica.DTFecha;
-
 import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,18 +11,15 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import excepciones.UsuarioNoExisteException;
 import logica.DTMedico;
 import logica.DTPaciente;
 import logica.DTUsuario;

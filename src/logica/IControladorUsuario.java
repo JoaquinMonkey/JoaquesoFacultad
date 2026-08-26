@@ -3,7 +3,6 @@ package logica;
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * @author TProg2017

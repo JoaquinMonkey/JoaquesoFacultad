@@ -186,9 +186,9 @@ public class Principal {
 		});
 		menuBeneficiosAnuales.add(menuItemConsultaDeBeneficio);
 
-		ManejadorUsuario mu = ManejadorUsuario.getinstance();
-		mu.addUsuario(new Paciente("pedro", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
-		mu.addUsuario(new Paciente("juan", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
-		mu.addUsuario(new Medico("asdasd1", "asd", "asd2", "asd3", 1, 2, 3, "eva"));
+//		ManejadorUsuario mu = ManejadorUsuario.getinstance();
+//		mu.addUsuario(new Paciente("pedro", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
+//		mu.addUsuario(new Paciente("juan", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
+//		mu.addUsuario(new Medico("asdasd1", "asd", "asd2", "asd3", 1, 2, 3, "eva"));
 	}
 }
