@@ -9,6 +9,7 @@ public class Paciente extends Usuario {
     private LocalDate fechaIng;
     private int ci;
     private Set<String> antecedentes;
+    private Set<Reserva> reservas;
 
     public Paciente(
             String nickname,
@@ -43,4 +44,8 @@ public class Paciente extends Usuario {
     public Set<String> getAntecedentes() {
         return antecedentes;
     }
+    
+    public Set<Reserva> getReservas(){
+    	return reservas;
+	}
 }

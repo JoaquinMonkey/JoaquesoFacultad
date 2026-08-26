@@ -2,6 +2,8 @@ package logica;
 
 import excepciones.UsuarioNoExisteException;
 import excepciones.UsuarioRepetidoException;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author TProg2017
@@ -39,4 +41,7 @@ public interface IControladorUsuario {
     public abstract DTUsuario seleccionarUsuario(
             String nickname)
             throws UsuarioNoExisteException;
+    
+    public abstract Set<String> listarPacientes();
+    
 }
