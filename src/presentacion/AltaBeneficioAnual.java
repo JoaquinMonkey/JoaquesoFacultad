@@ -2,12 +2,12 @@ package presentacion;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import excepciones.UsuarioNoExisteException;
-
+import excepciones.AnioBeneficioAnualRepetidoException;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -16,17 +16,14 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JComboBox;
-import logica.DataUsuario;
-import logica.IControladorUsuario;
+import logica.IControladorBeneficioAnual;
+import logica.ManejadorUsuario;
 
 @SuppressWarnings("serial")
 public class AltaBeneficioAnual extends JInternalFrame {
-	private IControladorUsuario controlUsr;
+	private IControladorBeneficioAnual icba;
 	private JTextField textFieldCantMed;
 	private JTextField textFieldAnio;
 	private JTextField textFieldCantOrd;
@@ -38,8 +35,8 @@ public class AltaBeneficioAnual extends JInternalFrame {
 	private JLabel lblIngresePaciente;
 	private JComboBox<String> comboBoxPacientes;
 
-	public AltaBeneficioAnual(IControladorUsuario icu) {
-		controlUsr = icu;
+	public AltaBeneficioAnual(IControladorBeneficioAnual icba) {
+		this.icba = icba;
 
 		setResizable(true);
 		setIconifiable(true);
@@ -145,6 +142,11 @@ public class AltaBeneficioAnual extends JInternalFrame {
 		textFieldCantMed.setColumns(10);
 
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cmdAltaBeneficioAnualActionPerformed(e);
+			}
+		});
 		GridBagConstraints gbc_btnAceptar = new GridBagConstraints();
 		gbc_btnAceptar.fill = GridBagConstraints.BOTH;
 		gbc_btnAceptar.insets = new Insets(0, 0, 0, 5);
@@ -153,6 +155,11 @@ public class AltaBeneficioAnual extends JInternalFrame {
 		getContentPane().add(btnAceptar, gbc_btnAceptar);
 
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
 		gbc_btnCancelar.fill = GridBagConstraints.BOTH;
 		gbc_btnCancelar.gridx = 2;
@@ -161,20 +168,107 @@ public class AltaBeneficioAnual extends JInternalFrame {
 	}
 
 	public void cargarPacientes() {
-	        DefaultComboBoxModel<String> model;
-	        try {
-	        	DataUsuario[] pacientes = controlUsr.getUsuarios();
-	        	List<String> nombres = new ArrayList<>();
-	        	
-	        	for (DataUsuario paciente: pacientes) {
-	        		nombres.add(paciente.getNombre());
-	        	}
-	        	
-	            model = new DefaultComboBoxModel<String>(nombres.toArray(new String[0]));
-	            comboBoxPacientes.setModel(model);
-	        } catch (UsuarioNoExisteException e) {
-	            // No se imprime mensaje de error sino que simplemente no se muestra ningún elemento
-	        }
-	    }
+		DefaultComboBoxModel<String> model;
+		try {
+			model = new DefaultComboBoxModel<String>(
+					ManejadorUsuario.getinstance().getPacientes().keySet().toArray(new String[0]));
+		} catch (NullPointerException e) {
+			model = new DefaultComboBoxModel<String>();
+		}
+
+		comboBoxPacientes.setModel(model);
+	}
+
+	protected void cmdAltaBeneficioAnualActionPerformed(ActionEvent arg0) {
+		String sAnio = this.textFieldAnio.getText();
+		String sCantOrd = this.textFieldCantOrd.getText();
+		String sCantMed = this.textFieldCantMed.getText();
+		String nickname = (String) this.comboBoxPacientes.getSelectedItem();
+
+		if (checkFormulario()) {
+			try {
+				int anio = Integer.parseInt(sAnio);
+				int cantMed = Integer.parseInt(sCantMed);
+				int cantOrd = Integer.parseInt(sCantOrd);
+				icba.altaBeneficioAnual(nickname, anio, cantMed, cantOrd);
+
+				JOptionPane.showMessageDialog(this, "El beneficio anual se ha creado con éxito",
+						"Alta de Beneficio Anual", JOptionPane.INFORMATION_MESSAGE);
+
+				limpiarFormulario();
+				setVisible(false);
+			} catch (AnioBeneficioAnualRepetidoException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), "Alta de Beneficio Anual",
+						JOptionPane.ERROR_MESSAGE);
+			}
+
+		}
+	}
+
+	private boolean checkFormulario() {
+		String sAnio = this.textFieldAnio.getText();
+		String sCantOrd = this.textFieldCantOrd.getText();
+		String sCantMed = this.textFieldCantMed.getText();
+		String nickname = (String) this.comboBoxPacientes.getSelectedItem();
+
+		if (nickname.isEmpty() || sAnio.isEmpty() || sCantOrd.isEmpty() || sCantMed.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "No puede haber campos vacíos", "Alta de Beneficio Anual",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		int anio = 0;
+		int cantOrd = 0;
+		int cantMed = 0;
+		try {
+			anio = Integer.parseInt(sAnio);
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "El Año debe ser un numero", "Alta de Beneficio Anual",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		try {
+			cantOrd = Integer.parseInt(sCantOrd);
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "La cantidad de ordenes debe ser un numero", "Alta de Beneficio Anual",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		try {
+			cantMed = Integer.parseInt(sCantMed);
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(this, "La cantidad de tickets de medicamentos debe ser un numero",
+					"Alta de Beneficio Anual", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (anio < 0) {
+			JOptionPane.showMessageDialog(this, "El Año debe ser un numero positivo", "Alta de Beneficio Anual",
+					JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (cantOrd < 0) {
+			JOptionPane.showMessageDialog(this, "La cantidad de ordenes debe ser un numero positivo",
+					"Alta de Beneficio Anual", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		if (cantMed < 0) {
+			JOptionPane.showMessageDialog(this, "La cantidad de tickets de medicamentos debe ser un numero positivo",
+					"Alta de Beneficio Anual", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
+		return true;
+	}
+
+	private void limpiarFormulario() {
+		textFieldAnio.setText("");
+		textFieldCantOrd.setText("");
+		textFieldCantMed.setText("");
+	}
 
 }

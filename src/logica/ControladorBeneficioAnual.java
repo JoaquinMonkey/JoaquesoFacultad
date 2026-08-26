@@ -9,7 +9,7 @@ public class ControladorBeneficioAnual implements IControladorBeneficioAnual {
 	public void altaBeneficioAnual(String nicknamePaciente, int anio, int cantMed, int cantOrd)
 			throws AnioBeneficioAnualRepetidoException {
 		if (!esValidoAnioBeneficioAnual(nicknamePaciente, anio)) {
-			throw new AnioBeneficioAnualRepetidoException("Ya existe un beneficio anual para el paciente en este anio");
+			throw new AnioBeneficioAnualRepetidoException("Ya existe un beneficio anual para el paciente en este año");
 		}
 
 		ManejadorUsuario mu = ManejadorUsuario.getinstance();

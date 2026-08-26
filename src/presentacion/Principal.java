@@ -7,23 +7,31 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import logica.Fabrica;
+import logica.IControladorBeneficioAnual;
 import logica.IControladorEspecialidad;
 import logica.IControladorUsuario;
+import logica.ManejadorUsuario;
+import logica.Medico;
+import logica.Paciente;
 
 import javax.swing.JMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.HashSet;
 
 public class Principal {
 
 	private JFrame frmGestionDeUsuarios;
 	private IControladorUsuario ICU;
 	private IControladorEspecialidad ICE;
+	private IControladorBeneficioAnual ICBA;
 	private AltaUsuario creUsrInternalFrame;
 	private ConsultarUsuario conUsrInternalFrame;
 	private ListaUsuarios lisUsrInternalFrame;
 	private AltaEspecialidad altaEspInternalFrame;
 	private AltaBeneficioAnual altaBenAnInternalFrame;
+	private ConsultaBeneficioAnual conBenAnInternalFrame;
 
 	/**
 	 * Launch the application.
@@ -51,6 +59,7 @@ public class Principal {
 		Fabrica fabrica = Fabrica.getInstance();
 		ICU = fabrica.getIControladorUsuario();
 		ICE = fabrica.getIControladorEspecialidad();
+		ICBA = fabrica.getIControladorBeneficioAnual();
 
 		// Se crean los tres InternalFrame y se incluyen al Frame principal ocultos.
 		// De esta forma, no es necesario crear y destruir objetos lo que enlentece la
@@ -70,14 +79,18 @@ public class Principal {
 		altaEspInternalFrame = new AltaEspecialidad(ICE);
 		altaEspInternalFrame.setVisible(false);
 
-		altaBenAnInternalFrame = new AltaBeneficioAnual(ICU);
+		altaBenAnInternalFrame = new AltaBeneficioAnual(ICBA);
 		altaBenAnInternalFrame.setVisible(false);
+
+		conBenAnInternalFrame = new ConsultaBeneficioAnual(ICBA, ICU);
+		conBenAnInternalFrame.setVisible(false);
 
 		frmGestionDeUsuarios.getContentPane().add(conUsrInternalFrame);
 		frmGestionDeUsuarios.getContentPane().add(creUsrInternalFrame);
 		frmGestionDeUsuarios.getContentPane().add(lisUsrInternalFrame);
 		frmGestionDeUsuarios.getContentPane().add(altaEspInternalFrame);
 		frmGestionDeUsuarios.getContentPane().add(altaBenAnInternalFrame);
+		frmGestionDeUsuarios.getContentPane().add(conBenAnInternalFrame);
 	}
 
 	/**
@@ -164,6 +177,17 @@ public class Principal {
 		menuBeneficiosAnuales.add(menuItemAltaDeBeneficio);
 
 		JMenuItem menuItemConsultaDeBeneficio = new JMenuItem("Consulta de Beneficio Anual");
+		menuItemConsultaDeBeneficio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				conBenAnInternalFrame.cargarPacientes();
+				conBenAnInternalFrame.setVisible(true);
+			}
+		});
 		menuBeneficiosAnuales.add(menuItemConsultaDeBeneficio);
+
+//		ManejadorUsuario mu = ManejadorUsuario.getinstance();
+//		mu.addUsuario(new Paciente("pedro", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
+//		mu.addUsuario(new Paciente("juan", "asd", "asd2", "asd3", LocalDate.now(), LocalDate.now(), 12345678, new HashSet<String>()));
+//		mu.addUsuario(new Medico("asdasd1", "asd", "asd2", "asd3", 1, 2, 3, "eva"));
 	}
 }

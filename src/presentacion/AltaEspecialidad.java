@@ -106,6 +106,11 @@ public class AltaEspecialidad extends JInternalFrame {
 		getContentPane().add(btnAceptar, gbc_btnAceptar);
 
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        setVisible(false);
+		    }
+		});
 		GridBagConstraints gbc_btnCancelar = new GridBagConstraints();
 		gbc_btnCancelar.insets = new Insets(0, 0, 5, 0);
 		gbc_btnCancelar.fill = GridBagConstraints.BOTH;
