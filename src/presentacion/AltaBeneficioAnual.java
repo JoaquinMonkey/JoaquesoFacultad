@@ -19,12 +19,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JComboBox;
 import logica.IControladorBeneficioAnual;
-import logica.ManejadorUsuario;
-import logica.Paciente;
+import logica.IControladorUsuario;
 
 @SuppressWarnings("serial")
 public class AltaBeneficioAnual extends JInternalFrame {
 	private IControladorBeneficioAnual icba;
+	private IControladorUsuario icu;
 	private JTextField textFieldCantMed;
 	private JTextField textFieldAnio;
 	private JTextField textFieldCantOrd;
@@ -36,8 +36,9 @@ public class AltaBeneficioAnual extends JInternalFrame {
 	private JLabel lblIngresePaciente;
 	private JComboBox<String> comboBoxPacientes;
 
-	public AltaBeneficioAnual(IControladorBeneficioAnual icba) {
+	public AltaBeneficioAnual(IControladorBeneficioAnual icba, IControladorUsuario icu) {
 		this.icba = icba;
+		this.icu = icu;
 
 		setResizable(true);
 		setIconifiable(true);
@@ -76,15 +77,6 @@ public class AltaBeneficioAnual extends JInternalFrame {
 		gbc_comboBoxUsuarios.gridx = 1;
 		gbc_comboBoxUsuarios.gridy = 0;
 		getContentPane().add(comboBoxPacientes, gbc_comboBoxUsuarios);
-
-		comboBoxPacientes.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String seleccionado = (String) comboBoxPacientes.getSelectedItem();
-				if (seleccionado != null) { // <--- ESTA VALIDACIÓN EVITA CRASHES AL RECARGAR
-					System.out.println("El usuario eligió: " + seleccionado);
-				}
-			}
-		});
 
 		lblIngreseAnio = new JLabel("Año:");
 		lblIngreseAnio.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -170,11 +162,8 @@ public class AltaBeneficioAnual extends JInternalFrame {
 	}
 
 	public void cargarPacientes() {
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(ManejadorUsuario.getinstance().getPacientes()
-				.stream()
-				.map(Paciente::getNickname)
-				.toArray(String[]::new)
-		);
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(
+				icu.listarPacientes().toArray(String[]::new));
 		comboBoxPacientes.setModel(model);
 	}
 

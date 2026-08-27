@@ -79,10 +79,10 @@ public class Principal {
 		altaEspInternalFrame = new AltaEspecialidad(ICE);
 		altaEspInternalFrame.setVisible(false);
 
-		altaBenAnInternalFrame = new AltaBeneficioAnual(ICBA);
+		altaBenAnInternalFrame = new AltaBeneficioAnual(ICBA, ICU);
 		altaBenAnInternalFrame.setVisible(false);
 
-		conBenAnInternalFrame = new ConsultaBeneficioAnual(ICBA);
+		conBenAnInternalFrame = new ConsultaBeneficioAnual(ICBA, ICU);
 		conBenAnInternalFrame.setVisible(false);
 
 		frmGestionDeUsuarios.getContentPane().add(conUsrInternalFrame);
