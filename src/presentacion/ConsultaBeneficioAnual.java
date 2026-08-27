@@ -20,14 +20,13 @@ import javax.swing.border.EmptyBorder;
 
 import logica.DTBeneficioAnual;
 import logica.IControladorBeneficioAnual;
-import logica.ManejadorUsuario;
-import logica.Paciente;
-
+import logica.IControladorUsuario;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
 public class ConsultaBeneficioAnual extends JInternalFrame {
 	private IControladorBeneficioAnual icba;
+	private IControladorUsuario icu;
 	private JLabel lblIngresePaciente;
 	private JComboBox<String> comboBoxPacientes;
 	private JLabel lblIngreseAnio;
@@ -42,8 +41,9 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 	private JTextField textFieldTickets;
 	private JLabel lblBeneficioAnual;
 
-	public ConsultaBeneficioAnual(IControladorBeneficioAnual icba) {
+	public ConsultaBeneficioAnual(IControladorBeneficioAnual icba, IControladorUsuario icu) {
 		this.icba = icba;
+		this.icu = icu;
 
 		setResizable(true);
 		setIconifiable(true);
@@ -79,7 +79,6 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 			public void actionPerformed(ActionEvent e) {
 				String nickname = (String) comboBoxPacientes.getSelectedItem();
 				if (nickname != null) { // <--- ESTA VALIDACIÓN EVITA CRASHES AL RECARGAR
-					System.out.println("El usuario eligió: " + nickname);
 					cargarBeneficiosAnuales(nickname);
 				}
 			}
@@ -104,14 +103,6 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 
 		comboBoxBeneficioAnual = new JComboBox<Integer>();
 		comboBoxBeneficioAnual.setSelectedIndex(-1);
-		comboBoxBeneficioAnual.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Integer anio = (Integer) comboBoxBeneficioAnual.getSelectedItem();
-				if (anio != null) { // <--- ESTA VALIDACIÓN EVITA CRASHES AL RECARGAR
-					System.out.println("El usuario eligió: " + anio);
-				}
-			}
-		});
 		GridBagConstraints gbc_comboBoxBeneficioAnual = new GridBagConstraints();
 		gbc_comboBoxBeneficioAnual.gridwidth = 2;
 		gbc_comboBoxBeneficioAnual.insets = new Insets(0, 0, 5, 0);
@@ -218,11 +209,8 @@ public class ConsultaBeneficioAnual extends JInternalFrame {
 	}
 
 	public void cargarPacientes() {
-		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(ManejadorUsuario.getinstance().getPacientes()
-				.stream()
-				.map(Paciente::getNickname)
-				.toArray(String[]::new)
-		);
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<String>(
+				icu.listarPacientes().toArray(String[]::new));
 		comboBoxPacientes.setModel(model);
 	}
 
